@@ -1,0 +1,96 @@
+Troubleshooting
+
+MongoDB Connection Failed
+
+bash
+# Check MongoDB is running
+docker ps | grep mongo
+
+# Verify connection
+mongosh "mongodb://localhost:27017"
+
+# Check logs
+docker logs smartgentools-mongodb
+Redis Connection Failed
+
+bash
+# Check Redis is running
+docker ps | grep redis
+
+# Test connection
+redis-cli ping
+
+# Check logs
+docker logs smartgentools-redis
+Worker Not Processing Tasks
+
+bash
+# Check worker is running
+docker ps | grep worker
+
+# Check logs
+npm run logs:worker
+
+# Verify Redis queue
+redis-cli LLEN facebook-automation
+
+# Restart worker
+docker-compose restart worker
+High Memory Usage
+
+bash
+# Check memory
+docker stats
+
+# Reduce browser pool size
+# Edit .env: MAX_CONCURRENT_BROWSERS=2
+
+# Restart services
+docker-compose restart
+Performance Optimization
+
+Backend
+
+env
+# Increase max connections
+NODE_ENV=production
+
+# Database connection pooling
+MONGO_MAX_POOL_SIZE=50
+REDIS_MAX_RETRIES=3
+
+# Disable debug logging
+LOG_LEVEL=warn
+Frontend
+
+bash
+# Enable production mode
+NODE_ENV=production npm run build
+
+# Analyze bundle
+npm run build:analyze
+Database
+
+JavaScript
+// Create indexes
+db.tasks.createIndex({ userId: 1, createdAt: -1 });
+db.groups.createIndex({ approved: 1 });
+db.sessions.createIndex({ userId: 1 });
+Backup & Recovery
+
+MongoDB Backup
+
+bash
+# Backup all data
+mongodump --uri="mongodb://admin:password@localhost:27017" \
+  --out ./backup
+
+# Restore
+mongorestore ./backup
+Export Data
+
+bash
+# Export tasks to CSV
+mongoexport --collection tasks \
+  --uri="mongodb://localhost:27017/facebook-automation" \
+  --out tasks.csv --csv
