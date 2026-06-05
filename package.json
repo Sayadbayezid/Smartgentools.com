@@ -1,0 +1,52 @@
+{
+  "name": "smartgentools",
+  "version": "1.0.0",
+  "description": "Facebook Automation System - Production Grade",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend",
+    "extension",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "npm run dev:backend & npm run dev:frontend & npm run dev:worker",
+    "dev:frontend": "npm run dev -w frontend",
+    "dev:backend": "npm run dev -w backend",
+    "dev:worker": "npm run worker -w backend",
+    "build": "npm run build:all",
+    "build:all": "npm run build -w frontend && npm run build -w backend && npm run build -w extension",
+    "build:frontend": "npm run build -w frontend",
+    "build:backend": "npm run build -w backend",
+    "build:extension": "npm run build -w extension",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "npm run test -w backend",
+    "test:frontend": "npm run test -w frontend",
+    "test:e2e": "npm run test:e2e -w backend",
+    "lint": "npm run lint:all",
+    "lint:all": "npm run lint -w frontend && npm run lint -w backend && npm run lint -w extension",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "docker:build": "docker build -t smartgentools:latest .",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "logs:backend": "docker-compose logs -f backend",
+    "logs:worker": "docker-compose logs -f worker",
+    "logs:db": "docker-compose logs -f mongodb"
+  },
+  "keywords": [
+    "facebook",
+    "automation",
+    "social-media",
+    "playwright",
+    "react",
+    "typescript"
+  ],
+  "author": "Sayadbayezid",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  }
+}
